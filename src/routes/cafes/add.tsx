@@ -7,11 +7,11 @@ import { useCreateCafe } from "../../hooks/useCreateCafe";
 import { useState } from "react";
 import Dialog from "../../components/Dialog";
 
-export const Route = createFileRoute("/cafes/create")({
-  component: CreateCafe,
+export const Route = createFileRoute("/cafes/add")({
+  component: AddCafe,
 });
 
-function CreateCafe() {
+function AddCafe() {
   const navigate = useNavigate();
   const createCafe = useCreateCafe();
   const [isOpen, setOpen] = useState(false);

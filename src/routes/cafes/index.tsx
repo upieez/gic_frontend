@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "@mui/material";
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme
@@ -7,6 +8,7 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { cafesQueryOptions } from "../../cafesQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { IEmployee } from "../../employees";
+import { createLink } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/cafes/")({
   component: Cafes,
@@ -64,6 +66,7 @@ export interface ICafe {
 function Cafes() {
   const cafesQuery = useSuspenseQuery(cafesQueryOptions);
   const [rowData, setRowData] = useState<ICafe[]>(cafesQuery.data);
+  const RouterButton = createLink(Button);
 
   const handleDeleteRow = (data: ICafe) => {
     setRowData((prevData) => prevData.filter((row) => row !== data));
@@ -88,6 +91,9 @@ function Cafes() {
   return (
     <div className="p-2">
       <h3>Welcome to Cafes!</h3>
+      <RouterButton to="/cafes/add" variant="contained" sx={{ mb: 2 }}>
+        Add Cafe
+      </RouterButton>
       <div
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container
