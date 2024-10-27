@@ -1,31 +1,31 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { employeesQueryOptions } from '../../employeesQueryOptions'
-import { useState } from 'react'
-import { IEmployee } from '../../employees'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { ColDef } from 'ag-grid-community'
-import { AgGridReact } from 'ag-grid-react'
+import { createFileRoute } from "@tanstack/react-router";
+import { employeesQueryOptions } from "../../employees";
+import { useState } from "react";
+import { IEmployee } from "../../employees";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ColDef } from "ag-grid-community";
+import { AgGridReact } from "ag-grid-react";
 
-export const Route = createFileRoute('/employees/')({
+export const Route = createFileRoute("/employees/")({
   component: Employees,
   loader: ({ context: { queryClient } }) =>
     queryClient.ensureQueryData(employeesQueryOptions),
-})
+});
 
 function Employees() {
-  const employeesQuery = useSuspenseQuery(employeesQueryOptions)
-  const [rowData] = useState<IEmployee[]>(employeesQuery.data)
+  const employeesQuery = useSuspenseQuery(employeesQueryOptions);
+  const [rowData] = useState<IEmployee[]>(employeesQuery.data);
   const [colDefs] = useState<ColDef<IEmployee>[]>([
-    { field: 'id' },
-    { field: 'name' },
-    { field: 'email' },
-    { field: 'phoneNumber' },
-    { field: 'gender' },
-    { field: 'cafeName' },
-    { headerName: 'Days in Cafe', field: 'daysInCafe' },
-    { headerName: 'Edit' },
-    { headerName: 'Delete' },
-  ])
+    { field: "id" },
+    { field: "name" },
+    { field: "email" },
+    { field: "phoneNumber" },
+    { field: "gender" },
+    { field: "cafeName" },
+    { headerName: "Days in Cafe", field: "daysInCafe" },
+    { headerName: "Edit" },
+    { headerName: "Delete" },
+  ]);
 
   return (
     <div className="p-2">
@@ -37,5 +37,5 @@ function Employees() {
         <AgGridReact rowData={rowData} columnDefs={colDefs} />
       </div>
     </div>
-  )
+  );
 }
