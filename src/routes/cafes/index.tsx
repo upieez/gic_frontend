@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button } from "@mui/material";
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme
 import { ColDef, ICellRendererParams } from "ag-grid-community";
-import { cafesQueryOptions } from "../../cafesQueryOptions";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { cafesQueryOptions } from "../../cafes";
 import { IEmployee } from "../../employees";
 import { createLink } from "@tanstack/react-router";
+import useGetCafes from "../../hooks/useGetCafes";
 
 export const Route = createFileRoute("/cafes/")({
   component: Cafes,
@@ -33,12 +33,12 @@ const ArrayCellRenderer: React.FC<ICellRendererParams> = (props) => {
 };
 
 const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
+  const navigate = useNavigate();
   const handleEdit = () => {
-    // Implement edit logic here
-    console.log("Edit", props.data);
+    navigate({ to: `/cafes/edit/${props.data.id}` });
   };
 
-  return <button onClick={handleEdit}>Edit</button>;
+  return <Button onClick={handleEdit}>Edit</Button>;
 };
 
 interface DeleteButtonRendererProps extends ICellRendererParams {
@@ -52,10 +52,15 @@ const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
     props.onDelete(props.data);
   };
 
-  return <button onClick={handleDelete}>Delete</button>;
+  return (
+    <Button color="error" onClick={handleDelete}>
+      Delete
+    </Button>
+  );
 };
 
 export interface ICafe {
+  id: string;
   logo: string;
   name: string;
   description: string;
@@ -64,13 +69,8 @@ export interface ICafe {
 }
 
 function Cafes() {
-  const cafesQuery = useSuspenseQuery(cafesQueryOptions);
-  const [rowData, setRowData] = useState<ICafe[]>(cafesQuery.data);
+  const cafesQuery = useGetCafes();
   const RouterButton = createLink(Button);
-
-  const handleDeleteRow = (data: ICafe) => {
-    setRowData((prevData) => prevData.filter((row) => row !== data));
-  };
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState<ColDef<ICafe>[]>([
@@ -79,11 +79,10 @@ function Cafes() {
     { field: "description" },
     { field: "employees", cellRenderer: ArrayCellRenderer },
     { field: "location", filter: true },
-    { headerName: "Edit", cellRenderer: EditButtonRenderer },
+    { cellRenderer: EditButtonRenderer },
     {
-      headerName: "Delete",
       cellRenderer: (props: ICellRendererParams) => (
-        <DeleteButtonRenderer {...props} onDelete={handleDeleteRow} />
+        <DeleteButtonRenderer {...props} onDelete={() => {}} />
       ),
     },
   ]);
@@ -98,7 +97,7 @@ function Cafes() {
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container
       >
-        <AgGridReact rowData={rowData} columnDefs={colDefs} />
+        <AgGridReact rowData={cafesQuery.data} columnDefs={colDefs} />
       </div>
     </div>
   );

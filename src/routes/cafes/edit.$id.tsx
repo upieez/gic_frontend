@@ -1,30 +1,39 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import { useCreateCafe } from "../../hooks/useCreateCafe";
 import { useState } from "react";
 import Dialog from "../../components/Dialog";
 import CafeForm, { ICafeForm } from "../../components/CafeForm";
+import { useEditCafe } from "../../hooks/useEditCafe";
+import { cafeQueryOptions } from "../../cafes";
+import { CAFE_ROUTE } from "../../constants";
+import useGetCafe from "../../hooks/useGetCafe";
 
-export const Route = createFileRoute("/cafes/add")({
-  component: AddCafe,
+export const Route = createFileRoute("/cafes/edit/$id")({
+  component: EditCafe,
+  loader: async ({ context: { queryClient }, params }) => {
+    const { id } = params;
+    return queryClient.ensureQueryData(cafeQueryOptions(id));
+  },
 });
 
-function AddCafe() {
+function EditCafe() {
   const navigate = useNavigate();
-  const createCafe = useCreateCafe();
+  const cafeId = Route.useParams().id;
+  const { data: cafe } = useGetCafe(cafeId);
+  const editCafe = useEditCafe();
+
   const [isOpen, setOpen] = useState(false);
 
   const form = useForm<ICafeForm>({
     defaultValues: {
-      name: "",
-      description: "",
-      location: "",
+      name: cafe?.name ?? "",
+      description: cafe?.description ?? "",
+      location: cafe?.location ?? "",
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      createCafe.mutate(value);
+      editCafe.mutate({ ...value, id: cafe?.id ?? "" });
       // TODO: handle error maybe optimistically update here
-      navigate({ to: "/cafes" });
+      navigate({ to: CAFE_ROUTE });
     },
   });
 
@@ -33,7 +42,7 @@ function AddCafe() {
       setOpen(true);
       return;
     }
-    navigate({ to: "/cafes" });
+    navigate({ to: CAFE_ROUTE });
   }
 
   function handleCancelDialog() {
@@ -41,7 +50,7 @@ function AddCafe() {
   }
 
   function handleAcceptDialog() {
-    navigate({ to: "/cafes" });
+    navigate({ to: CAFE_ROUTE });
   }
 
   return (
