@@ -6,7 +6,8 @@ export const CAFE_KEY = "cafes";
 export const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchCafes = async () => {
-  return axios.get<ICafe[]>(`${API_URL}/cafes`).then((res) => res.data);
+  const res = await axios.get<ICafe[]>(`${API_URL}/cafes`);
+  return res.data;
 };
 
 export const cafesQueryOptions = queryOptions({
@@ -15,7 +16,8 @@ export const cafesQueryOptions = queryOptions({
 });
 
 export const fetchCafe = async (id: string) => {
-  return axios.get<ICafe>(`${API_URL}/cafes/${id}`).then((res) => res.data);
+  const res = await axios.get<ICafe>(`${API_URL}/cafes/${id}`);
+  return res.data;
 };
 
 export const cafeQueryOptions = (id: string) =>
