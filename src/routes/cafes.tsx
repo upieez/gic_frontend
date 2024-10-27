@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { cafesQueryOptions } from "../cafesQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { IEmployee } from "./employees";
+import { IEmployee } from "../employees";
 
 export const Route = createFileRoute("/cafes")({
   component: Cafes,
