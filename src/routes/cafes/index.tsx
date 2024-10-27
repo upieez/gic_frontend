@@ -4,11 +4,11 @@ import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme
 import { ColDef, ICellRendererParams } from "ag-grid-community";
-import { cafesQueryOptions } from "../cafesQueryOptions";
+import { cafesQueryOptions } from "../../cafesQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { IEmployee } from "../employees";
+import { IEmployee } from "../../employees";
 
-export const Route = createFileRoute("/cafes")({
+export const Route = createFileRoute("/cafes/")({
   component: Cafes,
   loader: ({ context: { queryClient } }) =>
     queryClient.ensureQueryData(cafesQueryOptions),
