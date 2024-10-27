@@ -9,6 +9,7 @@ import { cafesQueryOptions } from "../../cafes";
 import { IEmployee } from "../../employees";
 import { createLink } from "@tanstack/react-router";
 import useGetCafes from "../../hooks/useGetCafes";
+import { useDeleteCafe } from "../../hooks/useDeleteCafe";
 
 export const Route = createFileRoute("/cafes/")({
   component: Cafes,
@@ -46,10 +47,11 @@ interface DeleteButtonRendererProps extends ICellRendererParams {
 }
 
 const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
+  const deleteCafe = useDeleteCafe();
   const handleDelete = () => {
     // Implement delete logic here
     console.log("Delete", props.data);
-    props.onDelete(props.data);
+    deleteCafe.mutate({ id: props.data.id });
   };
 
   return (
