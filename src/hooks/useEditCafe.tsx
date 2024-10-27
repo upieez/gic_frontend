@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "redaxios";
+import { API_URL } from "../constants";
 
 export function useEditCafe() {
   return useMutation({
@@ -9,7 +10,7 @@ export function useEditCafe() {
       description: string;
       location: string;
     }) => {
-      return axios.put(`http://localhost:3000/cafe/${data.id}`, data);
+      return axios.put(`${API_URL}/cafe/${data.id}`, data);
     },
   });
 }

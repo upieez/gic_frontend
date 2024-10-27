@@ -1,9 +1,7 @@
 import axios from "redaxios";
 import { ICafe } from "./routes/cafes";
 import { queryOptions } from "@tanstack/react-query";
-
-export const CAFE_KEY = "cafes";
-export const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL, CAFE_KEY } from "./constants";
 
 export const fetchCafes = async () => {
   const res = await axios.get<ICafe[]>(`${API_URL}/cafes`);

@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "redaxios";
+import { API_URL } from "../constants";
 
 export function useCreateCafe() {
   return useMutation({
@@ -8,7 +9,7 @@ export function useCreateCafe() {
       description: string;
       location: string;
     }) => {
-      return axios.post("http://localhost:3000/cafe", data);
+      return axios.post(`${API_URL}/cafe`, data);
     },
   });
 }
