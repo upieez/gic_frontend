@@ -17,6 +17,8 @@ import { yupValidator } from "@tanstack/yup-form-adapter";
 import * as yup from "yup";
 import useGetCafes from "../hooks/useGetCafes";
 import { Gender } from "../types";
+import { useNavigate } from "@tanstack/react-router";
+import { EMPLOYEE_ROUTE } from "../constants";
 
 export interface IEmployeeForm {
   name: string;
@@ -28,7 +30,6 @@ export interface IEmployeeForm {
 
 interface EmployeeFormProps {
   form: FormApi<IEmployeeForm> & ReactFormApi<IEmployeeForm>;
-  handleUnsavedChanges: () => void;
 }
 
 const sgPhoneNumberValidator = yup
@@ -39,11 +40,13 @@ const sgPhoneNumberValidator = yup
   )
   .required();
 
-export default function EmployeeForm({
-  form,
-  handleUnsavedChanges,
-}: EmployeeFormProps) {
+export default function EmployeeForm({ form }: EmployeeFormProps) {
   const cafesQuery = useGetCafes();
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate({ to: EMPLOYEE_ROUTE });
+  };
 
   return (
     <Paper sx={{ p: 2, m: "0 auto", maxWidth: "500px" }}>
@@ -203,7 +206,7 @@ export default function EmployeeForm({
             variant="outlined"
             color="primary"
             type="button"
-            onClick={handleUnsavedChanges}
+            onClick={handleCancel}
           >
             Cancel
           </Button>

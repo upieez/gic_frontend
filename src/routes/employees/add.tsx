@@ -1,11 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useForm } from "@tanstack/react-form";
-import { useState } from "react";
 import Dialog from "../../components/Dialog";
 import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
 import { EMPLOYEE_ROUTE } from "../../constants";
 import { useCreateEmployee } from "../../hooks/useCreateEmployee";
 import { Gender } from "../../types";
+import useFormWithBlocker from "../../hooks/useFormWithBlocker";
 
 export const Route = createFileRoute("/employees/add")({
   component: AddEmployee,
@@ -14,9 +13,7 @@ export const Route = createFileRoute("/employees/add")({
 function AddEmployee() {
   const navigate = useNavigate();
   const createEmployee = useCreateEmployee();
-  const [isOpen, setOpen] = useState(false);
-
-  const form = useForm<IEmployeeForm>({
+  const { form, blocker, isBlocked } = useFormWithBlocker<IEmployeeForm>({
     defaultValues: {
       name: "",
       email: "",
@@ -31,30 +28,15 @@ function AddEmployee() {
     },
   });
 
-  function handleAcceptDialog() {
-    navigate({ to: EMPLOYEE_ROUTE });
-  }
-
-  function handleUnsavedChanges() {
-    if (form.state.isDirty) {
-      setOpen(true);
-      return;
-    }
-
-    navigate({ to: EMPLOYEE_ROUTE });
-  }
-
-  function handleCancelDialog() {
-    setOpen(false);
-  }
+  const { reset, proceed } = blocker;
 
   return (
     <>
-      <EmployeeForm form={form} handleUnsavedChanges={handleUnsavedChanges} />
+      <EmployeeForm form={form} />
       <Dialog
-        open={isOpen}
-        handleAccept={handleAcceptDialog}
-        handleCancel={handleCancelDialog}
+        open={isBlocked}
+        handleAccept={() => proceed()}
+        handleCancel={() => reset()}
       />
     </>
   );

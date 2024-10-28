@@ -26,17 +26,12 @@ function AddCafe() {
   });
   const { reset, proceed } = blocker;
 
-  function handleAcceptDialog() {
-    proceed();
-    navigate({ to: CAFE_ROUTE });
-  }
-
   return (
     <>
       <CafeForm form={form} />
       <Dialog
         open={isBlocked}
-        handleAccept={handleAcceptDialog}
+        handleAccept={() => proceed()}
         handleCancel={() => reset()}
       />
     </>
