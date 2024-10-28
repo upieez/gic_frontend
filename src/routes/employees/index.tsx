@@ -19,6 +19,7 @@ import {
 } from "../../constants";
 import { useDeleteEmployee } from "../../hooks/useDeleteEmployee";
 import Dialog from "../../components/Dialog";
+import useGetCafes from "../../hooks/useGetCafes";
 
 const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const routeApi = getRouteApi("/employees/");
 
 function Employees() {
   const routeSearch: { cafe?: string } = routeApi.useSearch();
+  const cafesQuery = useGetCafes();
   const employeesQuery = useGetEmployees(routeSearch?.cafe);
   const RouterButton = createLink(Button);
 
@@ -96,7 +98,12 @@ function Employees() {
       <Typography variant="h2" component="h1">
         List of Employees
       </Typography>
-      <RouterButton to="/employees/add" variant="contained" sx={{ mb: 2 }}>
+      <RouterButton
+        to="/employees/add"
+        variant="contained"
+        sx={{ mb: 2 }}
+        disabled={cafesQuery.data.length === 0}
+      >
         Add New Employee
       </RouterButton>
       <div
