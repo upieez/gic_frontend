@@ -3,8 +3,8 @@ import { FormApi, ReactFormApi } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import { yupValidator } from "@tanstack/yup-form-adapter";
 import * as yup from "yup";
-import { CAFE_ROUTE } from "../constants";
 import FormWithStyle from "./FormWrapper";
+import { cafesLinkOptions } from "../utils";
 
 export interface ICafeForm {
   name: string;
@@ -20,7 +20,7 @@ export default function CafeForm({ form }: CafeFormProps) {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    navigate({ to: CAFE_ROUTE });
+    navigate({ ...cafesLinkOptions });
   };
 
   return (

@@ -17,8 +17,8 @@ import * as yup from "yup";
 import useGetCafes from "../hooks/useGetCafes";
 import { Gender } from "../types";
 import { useNavigate } from "@tanstack/react-router";
-import { EMPLOYEE_ROUTE } from "../constants";
 import FormWithStyle from "./FormWrapper";
+import { employeesLinkOptions } from "../utils";
 
 export interface IEmployeeForm {
   name: string;
@@ -45,7 +45,7 @@ export default function EmployeeForm({ form }: EmployeeFormProps) {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    navigate({ to: EMPLOYEE_ROUTE });
+    navigate({ ...employeesLinkOptions });
   };
 
   return (

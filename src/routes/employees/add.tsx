@@ -4,11 +4,11 @@ import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
 import {
   DIALOG_NAVIGATE_CONTENT,
   DIALOG_NAVIGATE_TITLE,
-  EMPLOYEE_ROUTE,
 } from "../../constants";
 import { useCreateEmployee } from "../../hooks/useCreateEmployee";
 import { Gender } from "../../types";
 import useFormWithBlocker from "../../hooks/useFormWithBlocker";
+import { employeesLinkOptions } from "../../utils";
 
 export const Route = createFileRoute("/employees/add")({
   component: AddEmployee,
@@ -27,8 +27,7 @@ function AddEmployee() {
     },
     onSubmit: async ({ value }) => {
       createEmployee.mutate(value);
-      // TODO: handle error maybe optimistically update here
-      navigate({ to: EMPLOYEE_ROUTE });
+      navigate({ ...employeesLinkOptions });
     },
   });
 

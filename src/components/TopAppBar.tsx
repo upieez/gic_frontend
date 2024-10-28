@@ -1,18 +1,14 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Link } from "@tanstack/react-router";
+import { cafesLinkOptions, employeesLinkOptions } from "../utils";
+import NavLinks from "./NavLinks";
 
 export default function TopAppBar() {
   return (
     <AppBar position="static">
       <Toolbar sx={{ gap: 2 }}>
-        <Typography variant="h6" component="div">
-          <Link to="/cafes">Cafes</Link>
-        </Typography>
-        <Typography variant="h6" component="div">
-          <Link to="/employees">Employees</Link>
-        </Typography>
+        <NavLinks options={cafesLinkOptions}>Cafes</NavLinks>
+        <NavLinks options={employeesLinkOptions}>Employees</NavLinks>
       </Toolbar>
     </AppBar>
   );

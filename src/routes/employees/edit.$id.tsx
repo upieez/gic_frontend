@@ -3,13 +3,13 @@ import Dialog from "../../components/Dialog";
 import {
   DIALOG_NAVIGATE_CONTENT,
   DIALOG_NAVIGATE_TITLE,
-  EMPLOYEE_ROUTE,
 } from "../../constants";
 import { employeeQueryOptions } from "../../employees";
 import useGetEmployee from "../../hooks/useGetEmployee";
 import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
 import { useEditEmployee } from "../../hooks/useEditEmployee";
 import useFormWithBlocker from "../../hooks/useFormWithBlocker";
+import { employeesLinkOptions } from "../../utils";
 
 export const Route = createFileRoute("/employees/edit/$id")({
   component: EmployeeEdit,
@@ -35,8 +35,7 @@ function EmployeeEdit() {
     },
     onSubmit: async ({ value }) => {
       editEmployee.mutate({ id: employeeId, ...value });
-      // TODO: handle error maybe optimistically update here
-      navigate({ to: EMPLOYEE_ROUTE });
+      navigate({ ...employeesLinkOptions });
     },
   });
   const { reset, proceed } = blocker;

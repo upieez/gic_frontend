@@ -3,11 +3,11 @@ import { useCreateCafe } from "../../hooks/useCreateCafe";
 import Dialog from "../../components/Dialog";
 import CafeForm, { ICafeForm } from "../../components/CafeForm";
 import {
-  CAFE_ROUTE,
   DIALOG_NAVIGATE_CONTENT,
   DIALOG_NAVIGATE_TITLE,
 } from "../../constants";
 import useFormWithBlocker from "../../hooks/useFormWithBlocker";
+import { cafesLinkOptions } from "../../utils";
 
 export const Route = createFileRoute("/cafes/add")({
   component: AddCafe,
@@ -24,8 +24,7 @@ function AddCafe() {
     },
     onSubmit: async ({ value }) => {
       createCafe.mutate(value);
-      // TODO: handle error maybe optimistically update here
-      navigate({ to: CAFE_ROUTE });
+      navigate({ ...cafesLinkOptions });
     },
   });
   const { reset, proceed } = blocker;
