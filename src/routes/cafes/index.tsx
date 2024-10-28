@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme
@@ -88,10 +88,12 @@ function Cafes() {
   ]);
 
   return (
-    <div className="p-2">
-      <h3>Welcome to Cafes!</h3>
+    <div>
+      <Typography variant="h2" component="h1">
+        List of Cafes
+      </Typography>
       <RouterButton to="/cafes/add" variant="contained" sx={{ mb: 2 }}>
-        Add Cafe
+        Add New Cafe
       </RouterButton>
       <div
         className="ag-theme-quartz" // applying the Data Grid theme

@@ -9,7 +9,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Paper,
   FormLabel,
 } from "@mui/material";
 import { FormApi, ReactFormApi } from "@tanstack/react-form";
@@ -19,6 +18,7 @@ import useGetCafes from "../hooks/useGetCafes";
 import { Gender } from "../types";
 import { useNavigate } from "@tanstack/react-router";
 import { EMPLOYEE_ROUTE } from "../constants";
+import FormWithStyle from "./FormWrapper";
 
 export interface IEmployeeForm {
   name: string;
@@ -49,7 +49,7 @@ export default function EmployeeForm({ form }: EmployeeFormProps) {
   };
 
   return (
-    <Paper sx={{ p: 2, m: "0 auto", maxWidth: "500px" }}>
+    <FormWithStyle>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -215,6 +215,6 @@ export default function EmployeeForm({ form }: EmployeeFormProps) {
           </Button>
         </Stack>
       </form>
-    </Paper>
+    </FormWithStyle>
   );
 }

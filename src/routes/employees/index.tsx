@@ -8,7 +8,7 @@ import { useState } from "react";
 import { IEmployee } from "../../employees";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useGetEmployees } from "../../hooks/useGetEmployees";
 import { ICellRendererParams } from "ag-grid";
 import { EMPLOYEE_ROUTE } from "../../constants";
@@ -64,10 +64,12 @@ function Employees() {
   ]);
 
   return (
-    <div className="p-2">
-      <h3>Welcome to Employees!</h3>
+    <div>
+      <Typography variant="h2" component="h1">
+        List of Employees
+      </Typography>
       <RouterButton to="/employees/add" variant="contained" sx={{ mb: 2 }}>
-        Add Employee
+        Add New Employee
       </RouterButton>
       <div
         className="ag-theme-quartz" // applying the Data Grid theme

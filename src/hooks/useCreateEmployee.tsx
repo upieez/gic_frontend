@@ -7,7 +7,7 @@ export function useCreateEmployee() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: IEmployeeForm) => {
-      return axios.post(`${API_URL}/employee`, data);
+      return axios.post(`${API_URL}/employees`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EMPLOYEE_KEY, CAFE_KEY] });

@@ -6,7 +6,7 @@ import { ICafeForm } from "../components/CafeForm";
 export function useEditCafe() {
   return useMutation({
     mutationFn: (data: ICafeForm & { id: string }) => {
-      return axios.put(`${API_URL}/cafe/${data.id}`, data);
+      return axios.put(`${API_URL}/cafes/${data.id}`, data);
     },
   });
 }

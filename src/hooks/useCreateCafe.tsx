@@ -6,7 +6,7 @@ import { ICafeForm } from "../components/CafeForm";
 export function useCreateCafe() {
   return useMutation({
     mutationFn: (data: ICafeForm) => {
-      return axios.post(`${API_URL}/cafe`, data);
+      return axios.post(`${API_URL}/cafes`, data);
     },
   });
 }

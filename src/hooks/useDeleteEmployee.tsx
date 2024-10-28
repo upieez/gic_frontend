@@ -6,7 +6,7 @@ export function useDeleteEmployee() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: { id: string }) => {
-      return axios.delete(`${API_URL}/employee/${data.id}`);
+      return axios.delete(`${API_URL}/employees/${data.id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EMPLOYEE_KEY] });
