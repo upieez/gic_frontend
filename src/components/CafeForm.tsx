@@ -1,4 +1,10 @@
-import { FormControl, TextField, Stack, Button } from "@mui/material";
+import {
+  FormControl,
+  TextField,
+  Stack,
+  Button,
+  Typography,
+} from "@mui/material";
 import { FormApi, ReactFormApi } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import { yupValidator } from "@tanstack/yup-form-adapter";
@@ -25,6 +31,9 @@ export default function CafeForm({ form }: CafeFormProps) {
 
   return (
     <FormWithStyle>
+      <Typography variant="h2" component="h1">
+        Cafe Form
+      </Typography>
       <form
         onSubmit={(e) => {
           e.preventDefault();

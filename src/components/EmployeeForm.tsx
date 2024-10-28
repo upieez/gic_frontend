@@ -10,6 +10,7 @@ import {
   Select,
   MenuItem,
   FormLabel,
+  Typography,
 } from "@mui/material";
 import { FormApi, ReactFormApi } from "@tanstack/react-form";
 import { yupValidator } from "@tanstack/yup-form-adapter";
@@ -50,6 +51,9 @@ export default function EmployeeForm({ form }: EmployeeFormProps) {
 
   return (
     <FormWithStyle>
+      <Typography variant="h2" component="h1">
+        Employee Form
+      </Typography>
       <form
         onSubmit={(e) => {
           e.preventDefault();
