@@ -6,6 +6,7 @@ import { EMPLOYEE_ROUTE } from "../../constants";
 import { employeeQueryOptions } from "../../employees";
 import useGetEmployee from "../../hooks/useGetEmployee";
 import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
+import { useEditEmployee } from "../../hooks/useEditEmployee";
 
 export const Route = createFileRoute("/employees/edit/$id")({
   component: EmployeeEdit,
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/employees/edit/$id")({
 function EmployeeEdit() {
   const navigate = useNavigate();
   const employeeId = Route.useParams().id;
+  const editEmployee = useEditEmployee();
   const { data: employee } = useGetEmployee(employeeId);
 
   const [isOpen, setOpen] = useState(false);
@@ -31,7 +33,7 @@ function EmployeeEdit() {
       cafeId: employee.cafeId,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      editEmployee.mutate({ id: employeeId, ...value });
       // TODO: handle error maybe optimistically update here
       navigate({ to: EMPLOYEE_ROUTE });
     },
