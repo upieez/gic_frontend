@@ -1,7 +1,9 @@
 import { FormControl, TextField, Stack, Button } from "@mui/material";
 import { FormApi, ReactFormApi } from "@tanstack/react-form";
+import { useNavigate } from "@tanstack/react-router";
 import { yupValidator } from "@tanstack/yup-form-adapter";
 import * as yup from "yup";
+import { CAFE_ROUTE } from "../constants";
 
 export interface ICafeForm {
   name: string;
@@ -11,13 +13,15 @@ export interface ICafeForm {
 
 interface CafeFormProps {
   form: FormApi<ICafeForm> & ReactFormApi<ICafeForm>;
-  handleUnsavedChanges: () => void;
 }
 
-export default function CafeForm({
-  form,
-  handleUnsavedChanges,
-}: CafeFormProps) {
+export default function CafeForm({ form }: CafeFormProps) {
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate({ to: CAFE_ROUTE });
+  };
+
   return (
     <form
       onSubmit={(e) => {
@@ -95,7 +99,7 @@ export default function CafeForm({
             variant="outlined"
             color="primary"
             type="button"
-            onClick={handleUnsavedChanges}
+            onClick={handleCancel}
           >
             Cancel
           </Button>

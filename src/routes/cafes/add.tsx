@@ -1,9 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useForm } from "@tanstack/react-form";
 import { useCreateCafe } from "../../hooks/useCreateCafe";
-import { useState } from "react";
 import Dialog from "../../components/Dialog";
 import CafeForm, { ICafeForm } from "../../components/CafeForm";
+import { CAFE_ROUTE } from "../../constants";
+import useFormWithBlocker from "../../hooks/useFormWithBlocker";
 
 export const Route = createFileRoute("/cafes/add")({
   component: AddCafe,
@@ -12,9 +12,7 @@ export const Route = createFileRoute("/cafes/add")({
 function AddCafe() {
   const navigate = useNavigate();
   const createCafe = useCreateCafe();
-  const [isOpen, setOpen] = useState(false);
-
-  const form = useForm<ICafeForm>({
+  const { form, blocker, isBlocked } = useFormWithBlocker<ICafeForm>({
     defaultValues: {
       name: "",
       description: "",
@@ -23,33 +21,23 @@ function AddCafe() {
     onSubmit: async ({ value }) => {
       createCafe.mutate(value);
       // TODO: handle error maybe optimistically update here
-      navigate({ to: "/cafes" });
+      navigate({ to: CAFE_ROUTE });
     },
   });
-
-  function handleUnsavedChanges() {
-    if (form.state.isDirty) {
-      setOpen(true);
-      return;
-    }
-    navigate({ to: "/cafes" });
-  }
-
-  function handleCancelDialog() {
-    setOpen(false);
-  }
+  const { reset, proceed } = blocker;
 
   function handleAcceptDialog() {
-    navigate({ to: "/cafes" });
+    proceed();
+    navigate({ to: CAFE_ROUTE });
   }
 
   return (
     <>
-      <CafeForm form={form} handleUnsavedChanges={handleUnsavedChanges} />
+      <CafeForm form={form} />
       <Dialog
-        open={isOpen}
+        open={isBlocked}
         handleAccept={handleAcceptDialog}
-        handleCancel={handleCancelDialog}
+        handleCancel={() => reset()}
       />
     </>
   );
