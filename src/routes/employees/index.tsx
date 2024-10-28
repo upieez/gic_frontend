@@ -14,7 +14,6 @@ export const Route = createFileRoute("/employees/")({
 
 function Employees() {
   const employeesQuery = useSuspenseQuery(employeesQueryOptions);
-  const [rowData] = useState<IEmployee[]>(employeesQuery.data);
   const [colDefs] = useState<ColDef<IEmployee>[]>([
     { field: "id" },
     { field: "name" },
@@ -34,7 +33,7 @@ function Employees() {
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container
       >
-        <AgGridReact rowData={rowData} columnDefs={colDefs} />
+        <AgGridReact rowData={employeesQuery.data} columnDefs={colDefs} />
       </div>
     </div>
   );
