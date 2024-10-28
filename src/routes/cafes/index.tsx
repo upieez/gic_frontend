@@ -20,19 +20,19 @@ export const Route = createFileRoute("/cafes/")({
 });
 
 const ArrayCellRenderer: React.FC<ICellRendererParams> = (props) => {
-  const arrayData = props.value;
+  const navigate = useNavigate();
+  const employees: Pick<IEmployee, "name" | "id" | "email">[] = props.value;
 
-  if (!Array.isArray(arrayData)) {
-    return <span>{arrayData}</span>;
-  }
+  const handleClick = () => {
+    navigate({
+      to: `/employees`,
+      search: { cafe: "test" },
+    });
+  };
 
-  return (
-    <ul>
-      {arrayData.map((item) => (
-        <li key={item.id}>{item.name}</li>
-      ))}
-    </ul>
-  );
+  return employees.map((employee) => (
+    <Button onClick={handleClick}>{employee.name}</Button>
+  ));
 };
 
 const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
@@ -44,11 +44,7 @@ const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   return <Button onClick={handleEdit}>Edit</Button>;
 };
 
-interface DeleteButtonRendererProps extends ICellRendererParams {
-  onDelete: (data: ICafe) => void;
-}
-
-const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
+const DeleteButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   const [isOpen, setOpen] = useState(false);
   const deleteCafe = useDeleteCafe();
   const handleDelete = () => {
@@ -93,13 +89,13 @@ function Cafes() {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState<ColDef<ICafe>[]>([
     { field: "name" },
-    { field: "description" },
+    { field: "description", flex: 1 },
     { field: "employees", cellRenderer: ArrayCellRenderer },
     { field: "location", filter: true },
     { cellRenderer: EditButtonRenderer },
     {
       cellRenderer: (props: ICellRendererParams) => (
-        <DeleteButtonRenderer {...props} onDelete={() => {}} />
+        <DeleteButtonRenderer {...props} />
       ),
     },
   ]);
@@ -116,7 +112,11 @@ function Cafes() {
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container
       >
-        <AgGridReact rowData={cafesQuery.data} columnDefs={colDefs} />
+        <AgGridReact
+          rowData={cafesQuery.data}
+          columnDefs={colDefs}
+          rowHeight={100}
+        />
       </div>
     </div>
   );
