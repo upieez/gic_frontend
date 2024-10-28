@@ -12,6 +12,7 @@ import { Button } from "@mui/material";
 import { useGetEmployees } from "../../hooks/useGetEmployees";
 import { ICellRendererParams } from "ag-grid";
 import { EMPLOYEE_ROUTE } from "../../constants";
+import { useDeleteEmployee } from "../../hooks/useDeleteEmployee";
 
 const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   const navigate = useNavigate();
@@ -22,13 +23,10 @@ const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   return <Button onClick={handleEdit}>Edit</Button>;
 };
 
-interface DeleteButtonRendererProps extends ICellRendererParams {
-  onDelete: (data: IEmployee) => void;
-}
-
-const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
+const DeleteButtonRenderer: React.FC<ICellRendererParams> = (props) => {
+  const deleteEmployee = useDeleteEmployee();
   const handleDelete = () => {
-    // deleteCafe.mutate({ id: props.data.id });
+    deleteEmployee.mutate({ id: props.data.id });
   };
 
   return (
@@ -60,7 +58,7 @@ function Employees() {
     {
       headerName: "Delete",
       cellRenderer: (props: ICellRendererParams) => (
-        <DeleteButtonRenderer {...props} onDelete={() => {}} />
+        <DeleteButtonRenderer {...props} />
       ),
     },
   ]);
