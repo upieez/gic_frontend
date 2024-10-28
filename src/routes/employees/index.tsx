@@ -11,8 +11,13 @@ import { AgGridReact } from "ag-grid-react";
 import { Button, Typography } from "@mui/material";
 import { useGetEmployees } from "../../hooks/useGetEmployees";
 import { ICellRendererParams } from "ag-grid";
-import { EMPLOYEE_ROUTE } from "../../constants";
+import {
+  DIALOG_DELETE_CONTENT,
+  DIALOG_DELETE_TITLE,
+  EMPLOYEE_ROUTE,
+} from "../../constants";
 import { useDeleteEmployee } from "../../hooks/useDeleteEmployee";
+import Dialog from "../../components/Dialog";
 
 const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   const navigate = useNavigate();
@@ -24,15 +29,32 @@ const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
 };
 
 const DeleteButtonRenderer: React.FC<ICellRendererParams> = (props) => {
+  const [isOpen, setOpen] = useState(false);
   const deleteEmployee = useDeleteEmployee();
+
   const handleDelete = () => {
     deleteEmployee.mutate({ id: props.data.id });
   };
 
   return (
-    <Button color="error" onClick={handleDelete}>
-      Delete
-    </Button>
+    <>
+      <Button
+        color="error"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Delete
+      </Button>
+      <Dialog
+        open={isOpen}
+        title={`${DIALOG_DELETE_TITLE} ${props.data.name}?`}
+        content={DIALOG_DELETE_CONTENT}
+        color="error"
+        handleAccept={handleDelete}
+        handleCancel={() => setOpen(false)}
+      />
+    </>
   );
 };
 
@@ -54,9 +76,8 @@ function Employees() {
     { field: "gender" },
     { field: "cafeName" },
     { headerName: "Days in Cafe", field: "daysInCafe" },
-    { headerName: "Edit", cellRenderer: EditButtonRenderer },
+    { cellRenderer: EditButtonRenderer },
     {
-      headerName: "Delete",
       cellRenderer: (props: ICellRendererParams) => (
         <DeleteButtonRenderer {...props} />
       ),

@@ -2,7 +2,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCreateCafe } from "../../hooks/useCreateCafe";
 import Dialog from "../../components/Dialog";
 import CafeForm, { ICafeForm } from "../../components/CafeForm";
-import { CAFE_ROUTE } from "../../constants";
+import {
+  CAFE_ROUTE,
+  DIALOG_NAVIGATE_CONTENT,
+  DIALOG_NAVIGATE_TITLE,
+} from "../../constants";
 import useFormWithBlocker from "../../hooks/useFormWithBlocker";
 
 export const Route = createFileRoute("/cafes/add")({
@@ -30,6 +34,8 @@ function AddCafe() {
     <>
       <CafeForm form={form} />
       <Dialog
+        title={DIALOG_NAVIGATE_TITLE}
+        content={DIALOG_NAVIGATE_CONTENT}
         open={isBlocked}
         handleAccept={() => proceed()}
         handleCancel={() => reset()}

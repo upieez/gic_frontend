@@ -1,6 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Dialog from "../../components/Dialog";
-import { EMPLOYEE_ROUTE } from "../../constants";
+import {
+  DIALOG_NAVIGATE_CONTENT,
+  DIALOG_NAVIGATE_TITLE,
+  EMPLOYEE_ROUTE,
+} from "../../constants";
 import { employeeQueryOptions } from "../../employees";
 import useGetEmployee from "../../hooks/useGetEmployee";
 import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
@@ -41,6 +45,8 @@ function EmployeeEdit() {
     <>
       <EmployeeForm form={form} />
       <Dialog
+        title={DIALOG_NAVIGATE_TITLE}
+        content={DIALOG_NAVIGATE_CONTENT}
         open={isBlocked}
         handleAccept={() => proceed()}
         handleCancel={() => reset()}

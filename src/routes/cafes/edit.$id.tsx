@@ -3,7 +3,11 @@ import Dialog from "../../components/Dialog";
 import CafeForm, { ICafeForm } from "../../components/CafeForm";
 import { useEditCafe } from "../../hooks/useEditCafe";
 import { cafeQueryOptions } from "../../cafes";
-import { CAFE_ROUTE } from "../../constants";
+import {
+  CAFE_ROUTE,
+  DIALOG_NAVIGATE_CONTENT,
+  DIALOG_NAVIGATE_TITLE,
+} from "../../constants";
 import useGetCafe from "../../hooks/useGetCafe";
 import useFormWithBlocker from "../../hooks/useFormWithBlocker";
 
@@ -40,6 +44,8 @@ function EditCafe() {
     <>
       <CafeForm form={form} />
       <Dialog
+        title={DIALOG_NAVIGATE_TITLE}
+        content={DIALOG_NAVIGATE_CONTENT}
         open={isBlocked}
         handleAccept={() => proceed()}
         handleCancel={() => reset()}

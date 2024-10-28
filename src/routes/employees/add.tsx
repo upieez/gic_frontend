@@ -1,7 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Dialog from "../../components/Dialog";
 import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
-import { EMPLOYEE_ROUTE } from "../../constants";
+import {
+  DIALOG_NAVIGATE_CONTENT,
+  DIALOG_NAVIGATE_TITLE,
+  EMPLOYEE_ROUTE,
+} from "../../constants";
 import { useCreateEmployee } from "../../hooks/useCreateEmployee";
 import { Gender } from "../../types";
 import useFormWithBlocker from "../../hooks/useFormWithBlocker";
@@ -34,6 +38,8 @@ function AddEmployee() {
     <>
       <EmployeeForm form={form} />
       <Dialog
+        title={DIALOG_NAVIGATE_TITLE}
+        content={DIALOG_NAVIGATE_CONTENT}
         open={isBlocked}
         handleAccept={() => proceed()}
         handleCancel={() => reset()}

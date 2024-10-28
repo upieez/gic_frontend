@@ -10,6 +10,8 @@ import { IEmployee } from "../../employees";
 import { createLink } from "@tanstack/react-router";
 import useGetCafes from "../../hooks/useGetCafes";
 import { useDeleteCafe } from "../../hooks/useDeleteCafe";
+import Dialog from "../../components/Dialog";
+import { DIALOG_DELETE_CONTENT, DIALOG_DELETE_TITLE } from "../../constants";
 
 export const Route = createFileRoute("/cafes/")({
   component: Cafes,
@@ -47,15 +49,31 @@ interface DeleteButtonRendererProps extends ICellRendererParams {
 }
 
 const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
+  const [isOpen, setOpen] = useState(false);
   const deleteCafe = useDeleteCafe();
   const handleDelete = () => {
     deleteCafe.mutate({ id: props.data.id });
   };
 
   return (
-    <Button color="error" onClick={handleDelete}>
-      Delete
-    </Button>
+    <>
+      <Button
+        color="error"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Delete
+      </Button>
+      <Dialog
+        open={isOpen}
+        title={`${DIALOG_DELETE_TITLE} ${props.data.name}?`}
+        content={DIALOG_DELETE_CONTENT}
+        color="error"
+        handleAccept={handleDelete}
+        handleCancel={() => setOpen(false)}
+      />
+    </>
   );
 };
 
@@ -74,7 +92,6 @@ function Cafes() {
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState<ColDef<ICafe>[]>([
-    { field: "logo" },
     { field: "name" },
     { field: "description" },
     { field: "employees", cellRenderer: ArrayCellRenderer },

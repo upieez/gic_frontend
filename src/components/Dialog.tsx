@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonOwnProps,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -9,12 +10,18 @@ import {
 
 interface DialogProps {
   open: boolean;
+  title: string;
+  content: string;
+  color?: ButtonOwnProps["color"];
   handleCancel: () => void;
   handleAccept: () => void;
 }
 
 export default function Dialog({
   open,
+  title,
+  content,
+  color = "primary",
   handleCancel,
   handleAccept,
 }: DialogProps) {
@@ -25,17 +32,20 @@ export default function Dialog({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        Are you sure you want to navigate away?
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          You have some unsaved changes
+          {content}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleAccept} autoFocus>
+        <Button
+          variant="contained"
+          color={color}
+          onClick={handleAccept}
+          autoFocus
+        >
           Okay
         </Button>
       </DialogActions>
