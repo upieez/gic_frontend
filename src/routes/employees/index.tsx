@@ -21,6 +21,15 @@ import { useDeleteEmployee } from "../../hooks/useDeleteEmployee";
 import Dialog from "../../components/Dialog";
 import useGetCafes from "../../hooks/useGetCafes";
 
+export const Route = createFileRoute("/employees/")({
+  component: Employees,
+  loader: ({ context: { queryClient }, location }) => {
+    const searchParams = new URLSearchParams(location.search);
+    const cafeId = searchParams.get("cafe");
+    queryClient.ensureQueryData(employeesQueryOptions(cafeId ?? undefined));
+  },
+});
+
 const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
   const navigate = useNavigate();
   const handleEdit = () => {
@@ -59,15 +68,6 @@ const DeleteButtonRenderer: React.FC<ICellRendererParams> = (props) => {
     </>
   );
 };
-
-export const Route = createFileRoute("/employees/")({
-  component: Employees,
-  loader: ({ context: { queryClient }, location }) => {
-    const searchParams = new URLSearchParams(location.search);
-    const cafeId = searchParams.get("cafe");
-    queryClient.ensureQueryData(employeesQueryOptions(cafeId ?? undefined));
-  },
-});
 
 const routeApi = getRouteApi("/employees/");
 
