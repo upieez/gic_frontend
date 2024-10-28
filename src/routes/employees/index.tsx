@@ -1,6 +1,7 @@
 import {
   createFileRoute,
   createLink,
+  getRouteApi,
   useNavigate,
 } from "@tanstack/react-router";
 import { employeesQueryOptions } from "../../employees";
@@ -60,12 +61,18 @@ const DeleteButtonRenderer: React.FC<ICellRendererParams> = (props) => {
 
 export const Route = createFileRoute("/employees/")({
   component: Employees,
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(employeesQueryOptions),
+  loader: ({ context: { queryClient }, location }) => {
+    const searchParams = new URLSearchParams(location.search);
+    const cafeId = searchParams.get("cafe");
+    queryClient.ensureQueryData(employeesQueryOptions(cafeId ?? undefined));
+  },
 });
 
+const routeApi = getRouteApi("/employees/");
+
 function Employees() {
-  const employeesQuery = useGetEmployees();
+  const routeSearch: { cafe?: string } = routeApi.useSearch();
+  const employeesQuery = useGetEmployees(routeSearch?.cafe);
   const RouterButton = createLink(Button);
 
   const [colDefs] = useState<ColDef<IEmployee>[]>([

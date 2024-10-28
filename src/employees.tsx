@@ -15,15 +15,19 @@ export interface IEmployee {
   daysInCafe: number;
 }
 
-export const fetchEmployees = async () => {
-  const res = await axios.get<IEmployee[]>(`${API_URL}/employees`);
+export const fetchEmployees = async (cafe?: string) => {
+  const url = cafe
+    ? `${API_URL}/employees?cafe=${cafe}`
+    : `${API_URL}/employees`;
+  const res = await axios.get<IEmployee[]>(url);
   return res.data;
 };
 
-export const employeesQueryOptions = queryOptions({
-  queryKey: [EMPLOYEE_KEY],
-  queryFn: () => fetchEmployees(),
-});
+export const employeesQueryOptions = (cafe?: string) =>
+  queryOptions({
+    queryKey: [EMPLOYEE_KEY, cafe],
+    queryFn: () => fetchEmployees(cafe),
+  });
 
 export const fetchEmployee = async (id: string) => {
   const res = await axios.get<IEmployee>(`${API_URL}/employees/${id}`);

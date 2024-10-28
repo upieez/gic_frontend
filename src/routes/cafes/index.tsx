@@ -21,17 +21,17 @@ export const Route = createFileRoute("/cafes/")({
 
 const ArrayCellRenderer: React.FC<ICellRendererParams> = (props) => {
   const navigate = useNavigate();
-  const employees: Pick<IEmployee, "name" | "id" | "email">[] = props.value;
+  const employees: Pick<IEmployee, "name" | "id" | "cafeName">[] = props.value;
 
-  const handleClick = () => {
+  const handleClick = (cafeName: string) => {
     navigate({
       to: `/employees`,
-      search: { cafe: "test" },
+      search: { cafe: cafeName },
     });
   };
 
   return employees.map((employee) => (
-    <Button key={employee.id} onClick={handleClick}>
+    <Button key={employee.id} onClick={() => handleClick(employee.cafeName)}>
       {employee.name}
     </Button>
   ));
