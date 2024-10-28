@@ -16,11 +16,7 @@ import { FormApi, ReactFormApi } from "@tanstack/react-form";
 import { yupValidator } from "@tanstack/yup-form-adapter";
 import * as yup from "yup";
 import useGetCafes from "../hooks/useGetCafes";
-
-enum Gender {
-  MALE = "male",
-  FEMALE = "female",
-}
+import { Gender } from "../types";
 
 export interface IEmployeeForm {
   name: string;
@@ -55,7 +51,6 @@ export default function EmployeeForm({
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.log(form.state);
           form.handleSubmit();
         }}
       >

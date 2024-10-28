@@ -49,8 +49,6 @@ interface DeleteButtonRendererProps extends ICellRendererParams {
 const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
   const deleteCafe = useDeleteCafe();
   const handleDelete = () => {
-    // Implement delete logic here
-    console.log("Delete", props.data);
     deleteCafe.mutate({ id: props.data.id });
   };
 

@@ -21,7 +21,6 @@ function AddCafe() {
       location: "",
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
       createCafe.mutate(value);
       // TODO: handle error maybe optimistically update here
       navigate({ to: "/cafes" });

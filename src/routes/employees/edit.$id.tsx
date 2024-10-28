@@ -2,50 +2,55 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import Dialog from "../../components/Dialog";
-import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
 import { EMPLOYEE_ROUTE } from "../../constants";
-import { useCreateEmployee } from "../../hooks/useCreateEmployee";
-import { Gender } from "../../types";
+import { employeeQueryOptions } from "../../employees";
+import useGetEmployee from "../../hooks/useGetEmployee";
+import EmployeeForm, { IEmployeeForm } from "../../components/EmployeeForm";
 
-export const Route = createFileRoute("/employees/add")({
-  component: AddEmployee,
+export const Route = createFileRoute("/employees/edit/$id")({
+  component: EmployeeEdit,
+  loader: async ({ context: { queryClient }, params }) => {
+    const { id } = params;
+    return queryClient.ensureQueryData(employeeQueryOptions(id));
+  },
 });
 
-function AddEmployee() {
+function EmployeeEdit() {
   const navigate = useNavigate();
-  const createEmployee = useCreateEmployee();
+  const employeeId = Route.useParams().id;
+  const { data: employee } = useGetEmployee(employeeId);
+
   const [isOpen, setOpen] = useState(false);
 
   const form = useForm<IEmployeeForm>({
     defaultValues: {
-      name: "",
-      email: "",
-      phoneNumber: "",
-      gender: Gender.MALE,
-      cafeId: "",
+      name: employee.name,
+      email: employee.email,
+      phoneNumber: employee.phoneNumber,
+      gender: employee.gender,
+      cafeId: employee.cafeId,
     },
     onSubmit: async ({ value }) => {
-      createEmployee.mutate(value);
+      console.log(value);
       // TODO: handle error maybe optimistically update here
       navigate({ to: EMPLOYEE_ROUTE });
     },
   });
-
-  function handleAcceptDialog() {
-    navigate({ to: EMPLOYEE_ROUTE });
-  }
 
   function handleUnsavedChanges() {
     if (form.state.isDirty) {
       setOpen(true);
       return;
     }
-
     navigate({ to: EMPLOYEE_ROUTE });
   }
 
   function handleCancelDialog() {
     setOpen(false);
+  }
+
+  function handleAcceptDialog() {
+    navigate({ to: EMPLOYEE_ROUTE });
   }
 
   return (

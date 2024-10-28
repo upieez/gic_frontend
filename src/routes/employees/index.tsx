@@ -1,11 +1,42 @@
-import { createFileRoute, createLink } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  createLink,
+  useNavigate,
+} from "@tanstack/react-router";
 import { employeesQueryOptions } from "../../employees";
 import { useState } from "react";
 import { IEmployee } from "../../employees";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { Button } from "@mui/material";
+import { useGetEmployees } from "../../hooks/useGetEmployees";
+import { ICellRendererParams } from "ag-grid";
+import { EMPLOYEE_ROUTE } from "../../constants";
+
+const EditButtonRenderer: React.FC<ICellRendererParams> = (props) => {
+  const navigate = useNavigate();
+  const handleEdit = () => {
+    navigate({ to: `${EMPLOYEE_ROUTE}/edit/${props.data.id}` });
+  };
+
+  return <Button onClick={handleEdit}>Edit</Button>;
+};
+
+interface DeleteButtonRendererProps extends ICellRendererParams {
+  onDelete: (data: IEmployee) => void;
+}
+
+const DeleteButtonRenderer: React.FC<DeleteButtonRendererProps> = (props) => {
+  const handleDelete = () => {
+    // deleteCafe.mutate({ id: props.data.id });
+  };
+
+  return (
+    <Button color="error" onClick={handleDelete}>
+      Delete
+    </Button>
+  );
+};
 
 export const Route = createFileRoute("/employees/")({
   component: Employees,
@@ -14,8 +45,9 @@ export const Route = createFileRoute("/employees/")({
 });
 
 function Employees() {
+  const employeesQuery = useGetEmployees();
   const RouterButton = createLink(Button);
-  const employeesQuery = useSuspenseQuery(employeesQueryOptions);
+
   const [colDefs] = useState<ColDef<IEmployee>[]>([
     { field: "id" },
     { field: "name" },
@@ -24,8 +56,13 @@ function Employees() {
     { field: "gender" },
     { field: "cafeName" },
     { headerName: "Days in Cafe", field: "daysInCafe" },
-    { headerName: "Edit" },
-    { headerName: "Delete" },
+    { headerName: "Edit", cellRenderer: EditButtonRenderer },
+    {
+      headerName: "Delete",
+      cellRenderer: (props: ICellRendererParams) => (
+        <DeleteButtonRenderer {...props} onDelete={() => {}} />
+      ),
+    },
   ]);
 
   return (
