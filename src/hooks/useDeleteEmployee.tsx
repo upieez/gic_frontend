@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "redaxios";
-import { API_URL, EMPLOYEE_KEY } from "../constants";
+import { API_URL } from "../constants";
 
 export function useDeleteEmployee() {
   const queryClient = useQueryClient();
@@ -9,7 +9,7 @@ export function useDeleteEmployee() {
       return axios.delete(`${API_URL}/employees/${data.id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [EMPLOYEE_KEY] });
+      queryClient.invalidateQueries();
     },
   });
 }

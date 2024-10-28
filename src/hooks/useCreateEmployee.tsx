@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "redaxios";
-import { API_URL, CAFE_KEY, EMPLOYEE_KEY } from "../constants";
+import { API_URL } from "../constants";
 import { IEmployeeForm } from "../components/EmployeeForm";
 
 export function useCreateEmployee() {
@@ -10,7 +10,7 @@ export function useCreateEmployee() {
       return axios.post(`${API_URL}/employees`, data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [EMPLOYEE_KEY, CAFE_KEY] });
+      queryClient.invalidateQueries();
     },
   });
 }

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "redaxios";
-import { API_URL, CAFE_KEY } from "../constants";
+import { API_URL } from "../constants";
 
 export function useDeleteCafe() {
   const queryClient = useQueryClient();
@@ -9,7 +9,7 @@ export function useDeleteCafe() {
       return axios.delete(`${API_URL}/cafes/${data.id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CAFE_KEY] });
+      queryClient.invalidateQueries();
     },
   });
 }

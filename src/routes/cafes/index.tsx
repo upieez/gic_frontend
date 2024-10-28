@@ -31,7 +31,9 @@ const ArrayCellRenderer: React.FC<ICellRendererParams> = (props) => {
   };
 
   return employees.map((employee) => (
-    <Button onClick={handleClick}>{employee.name}</Button>
+    <Button key={employee.id} onClick={handleClick}>
+      {employee.name}
+    </Button>
   ));
 };
 
